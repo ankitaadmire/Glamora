@@ -28,33 +28,79 @@ The project includes a custom admin panel for managing customers, service provid
 - Notification management
 - Admin profile and settings
 
-### 👤 Customer
+## 📸 Project Screenshots
 
-- Customer registration and authentication
-- Browse available beauty services
-- View service details
-- Book services
-- View bookings
-- Reviews and ratings
+### 🔐 Admin Login
 
-### 💇 Service Provider
+![Admin Login](screenshots/login.png)
 
-- Provider registration
-- Provider approval workflow
-- Service assignment
-- Availability management
-- Booking-related functionality
+### 📊 Dashboard
+
+![Dashboard](screenshots/dashboard-overview.png)
+
+![Dashboard Overview](screenshots/dashboard-overview2.png)
+
+![Dashboard Statistics](screenshots/dashboard-overview3.png)
+
+### 👥 User Management
+
+![User Management](screenshots/user%20management.png)
+
+### 📂 Category Management
+
+![Category Management](screenshots/category.png)
+
+### 💇 Service Management
+
+![Service Management](screenshots/service.png)
+
+### 👨‍💼 Provider Services
+
+![Provider Services](screenshots/provider-service.png)
+
+### 📅 Bookings
+
+![Bookings](screenshots/bookings.png)
+
+### ⭐ Ratings & Reviews
+
+![Ratings and Reviews](screenshots/ratings-reviews.png)
+
+### 🎁 Offers & Discounts
+
+![Offers and Discounts](screenshots/offers-discounts.png)
+
+### 🕐 Availability
+
+![Availability](screenshots/availability.png)
+
+### 💳 Payments
+
+![Payments](screenshots/payments.png)
+
+### 💰 Revenue
+
+![Revenue](screenshots/revenue.png)
+
+### 📈 Reports
+
+![Reports](screenshots/reports.png)
 
 ### 🔔 Notifications
 
-The admin panel includes notifications for important activities such as:
+![Notifications](screenshots/notifications.png)
 
-- New provider registration
-- New booking
-- New service requests
-- Other platform activities
+### 🆘 Support
 
----
+![Support](screenshots/support.png)
+
+### ⚙️ Settings
+
+![Settings](screenshots/settings.png)
+
+### 👤 Admin Profile
+
+![Admin Profile](screenshots/admin-profile.png)
 
 ## 🛠️ Technologies Used
 
