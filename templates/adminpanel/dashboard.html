@@ -1,0 +1,766 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<div class="page-heading">
+
+    <div>
+        <h2>Dashboard</h2>
+
+        <p>
+            Overview of your Glamora platform
+        </p>
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     STAT CARDS
+===================================================== -->
+
+<div class="stats-grid">
+
+
+    <!-- CUSTOMERS -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Total Customers</span>
+
+            <h2>
+                {{ total_customers }}
+            </h2>
+
+            <small>
+                Registered customers
+            </small>
+
+        </div>
+
+        <div class="stat-icon blue">
+
+            <i class="fa-solid fa-users"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROVIDERS -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Service Providers</span>
+
+            <h2>
+                {{ total_providers }}
+            </h2>
+
+            <small>
+                {{ active_providers }} active
+            </small>
+
+        </div>
+
+        <div class="stat-icon cyan">
+
+            <i class="fa-solid fa-briefcase"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- SERVICES -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Total Services</span>
+
+            <h2>
+                {{ total_services }}
+            </h2>
+
+            <small>
+                Available services
+            </small>
+
+        </div>
+
+        <div class="stat-icon purple">
+
+            <i class="fa-solid fa-scissors"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORIES -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Total Categories</span>
+
+            <h2>
+                {{ total_categories }}
+            </h2>
+
+            <small>
+                Service categories
+            </small>
+
+        </div>
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-tags"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- BOOKINGS -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Total Bookings</span>
+
+            <h2>
+                {{ total_bookings }}
+            </h2>
+
+            <small>
+                All bookings
+            </small>
+
+        </div>
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- PENDING BOOKINGS -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Pending Bookings</span>
+
+            <h2>
+                {{ pending_bookings }}
+            </h2>
+
+            <small>
+                Awaiting confirmation
+            </small>
+
+        </div>
+
+        <div class="stat-icon yellow">
+
+            <i class="fa-regular fa-calendar-days"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETED BOOKINGS -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Completed Bookings</span>
+
+            <h2>
+                {{ completed_bookings }}
+            </h2>
+
+            <small>
+                Successfully completed
+            </small>
+
+        </div>
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- REVENUE -->
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <span>Total Revenue</span>
+
+            <h2>
+                ₹{{ total_revenue|floatformat:2 }}
+            </h2>
+
+            <small>
+                From completed bookings
+            </small>
+
+        </div>
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BOOKING SUMMARY
+===================================================== -->
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>Booking Summary</h3>
+
+            <p>
+                Current booking status
+            </p>
+
+        </div>
+
+        <a href="{% url 'admin_bookings' %}">
+            View all
+        </a>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div>
+
+            <span>Pending</span>
+
+            <strong>
+                {{ pending_bookings }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>Approved</span>
+
+            <strong>
+                {{ approved_bookings }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>Completed</span>
+
+            <strong>
+                {{ completed_bookings }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>Rejected</span>
+
+            <strong>
+                {{ rejected_bookings }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REVENUE / BOOKING TREND
+===================================================== -->
+
+<div class="dashboard-card revenue-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Booking & Revenue Trend
+            </h3>
+
+            <p>
+                Last 30 days
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        style="
+            width:100%;
+            overflow-x:auto;
+            padding:20px 0;
+        "
+    >
+
+        <canvas
+            id="bookingRevenueChart"
+            style="min-width:900px; height:350px;"
+        >
+        </canvas>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RECENT BOOKINGS
+===================================================== -->
+
+<div class="dashboard-card activity-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Recent Bookings
+            </h3>
+
+            <p>
+                Latest bookings from customers
+            </p>
+
+        </div>
+
+        <a href="{% url 'admin_bookings' %}">
+            View all
+        </a>
+
+    </div>
+
+
+    <div class="activity-list">
+
+        {% for booking in recent_bookings %}
+
+        <div class="activity-item">
+
+            <div class="activity-icon">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+            </div>
+
+
+            <div class="activity-details">
+
+                <strong>
+                    {{ booking.service.name }}
+                </strong>
+
+                <span>
+                    {{ booking.customer.username }}
+                    ·
+                    {{ booking.created_at|date:"d M Y, h:i A" }}
+                </span>
+
+            </div>
+
+
+            <strong class="amount">
+
+                ₹{{ booking.amount|floatformat:2 }}
+
+            </strong>
+
+        </div>
+
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-calendar-xmark"></i>
+
+            <p>
+                No bookings available yet.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PENDING PROVIDERS
+===================================================== -->
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Pending Provider Approvals
+            </h3>
+
+            <p>
+                {{ pending_approvals }}
+                provider{{ pending_approvals|pluralize }}
+                awaiting review
+            </p>
+
+        </div>
+
+        <a href="{% url 'admin_users' %}">
+            View all
+        </a>
+
+    </div>
+
+
+    <div class="activity-list">
+
+        {% for provider in pending_providers %}
+
+        <div class="activity-item">
+
+            <div class="activity-icon">
+
+                <i class="fa-solid fa-user-clock"></i>
+
+            </div>
+
+
+            <div class="activity-details">
+
+                <strong>
+                    {{ provider.username }}
+                </strong>
+
+                <span>
+                    {{ provider.email }}
+                    ·
+                    {{ provider.date_joined|date:"d M Y" }}
+                </span>
+
+            </div>
+
+
+            <span class="status-badge pending">
+                Pending
+            </span>
+
+        </div>
+
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-user-check"></i>
+
+            <p>
+                No pending provider approvals.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOP SERVICES
+===================================================== -->
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Top Performing Services
+            </h3>
+
+            <p>
+                Based on total bookings
+            </p>
+
+        </div>
+
+        <a href="{% url 'admin_services' %}">
+            View services
+        </a>
+
+    </div>
+
+
+    <div class="service-performance">
+
+        {% for service in top_services %}
+
+        <div class="service-row">
+
+            <div>
+
+                <span>
+                    {{ service.name }}
+                </span>
+
+                <strong>
+                    {{ service.booking_count }}
+                    booking{{ service.booking_count|pluralize }}
+                </strong>
+
+            </div>
+
+
+            <div class="progress">
+
+                {% if total_bookings %}
+
+                    {% widthratio service.booking_count total_bookings 100 as service_percentage %}
+
+                    <div
+                        class="progress-bar"
+                        style="width:{{ service_percentage }}%;"
+                    >
+                    </div>
+
+                {% else %}
+
+                    <div
+                        class="progress-bar"
+                        style="width:0%;"
+                    >
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-scissors"></i>
+
+            <p>
+                No service booking data available yet.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CHART.JS
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+const chartData = [
+    {% for item in chart_data %}
+
+    {
+        date: "{{ item.date }}",
+        bookings: {{ item.booking_count }},
+        revenue: {{ item.revenue }}
+    }
+
+    {% if not forloop.last %},{% endif %} 
+
+    {% endfor %}
+];
+
+
+const labels = chartData.map(
+    item => item.date
+);
+
+
+const bookings = chartData.map(
+    item => item.bookings
+);
+
+
+const revenue = chartData.map(
+    item => item.revenue
+);
+
+
+const ctx = document
+    .getElementById(
+        'bookingRevenueChart'
+    );
+
+
+new Chart(
+    ctx,
+    {
+        type: 'line',
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
+                    label: 'Revenue (₹)',
+
+                    data: revenue,
+
+                    tension: 0.4,
+
+                    yAxisID: 'revenueAxis'
+                },
+
+                {
+                    label: 'Bookings',
+
+                    data: bookings,
+
+                    tension: 0.4,
+
+                    yAxisID: 'bookingAxis'
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+
+            scales: {
+
+                revenueAxis: {
+
+                    type: 'linear',
+
+                    position: 'left',
+
+                    beginAtZero: true,
+
+                    title: {
+                        display: true,
+                        text: 'Revenue (₹)'
+                    }
+
+                },
+
+                bookingAxis: {
+
+                    type: 'linear',
+
+                    position: 'right',
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    },
+
+                    grid: {
+                        drawOnChartArea: false
+                    },
+
+                    title: {
+                        display: true,
+                        text: 'Bookings'
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

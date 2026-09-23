@@ -1,0 +1,137 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Reports
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header mb-4">
+
+    <h2>Reports</h2>
+
+    <p class="text-muted">
+        Platform performance reports
+    </p>
+
+</div>
+
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+
+        <div class="dashboard-card">
+
+            <h5>Total Bookings</h5>
+
+            <h2>
+                {{ total_bookings }}
+            </h2>
+
+            <p class="text-muted">
+                All bookings
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="dashboard-card">
+
+            <h5>Completed Bookings</h5>
+
+            <h2>
+                {{ completed_bookings }}
+            </h2>
+
+            <p class="text-muted">
+                Successfully completed
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="dashboard-card">
+
+            <h5>Pending Bookings</h5>
+
+            <h2>
+                {{ pending_bookings }}
+            </h2>
+
+            <p class="text-muted">
+                Awaiting action
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="dashboard-card">
+
+            <h5>Cancelled Bookings</h5>
+
+            <h2>
+                {{ cancelled_bookings }}
+            </h2>
+
+            <p class="text-muted">
+                Cancelled bookings
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="dashboard-card">
+
+            <h5>Total Payments</h5>
+
+            <h2>
+                {{ total_payments }}
+            </h2>
+
+            <p class="text-muted">
+                All transactions
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="dashboard-card">
+
+            <h5>Total Revenue</h5>
+
+            <h2>
+                ₹{{ total_revenue }}
+            </h2>
+
+            <p class="text-muted">
+                Completed payments
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

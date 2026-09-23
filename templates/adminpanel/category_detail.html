@@ -1,0 +1,374 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Category Details
+{% endblock %}
+
+{% block content %}
+
+<div class="category-detail-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+
+        <div>
+            <h2>Category Details</h2>
+            <p>View complete information about this category.</p>
+        </div>
+
+        <div class="page-actions">
+
+            <a href="{% url 'edit_category' category.id %}"
+               class="btn btn-primary">
+
+                <i class="fa-solid fa-pen"></i>
+                Edit Category
+
+            </a>
+
+            <a href="{% url 'admin_categories' %}"
+               class="btn btn-light">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY CARD -->
+    <div class="dashboard-card category-detail-card">
+
+        <div class="category-detail-layout">
+
+            <!-- IMAGE -->
+            <div class="category-image-section">
+
+                {% if category.image %}
+
+                    <img src="{{ category.image.url }}"
+                         alt="{{ category.name }}"
+                         class="category-detail-image">
+
+                {% else %}
+
+                    <div class="category-image-placeholder">
+
+                        <i class="fa-solid fa-tags"></i>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- DETAILS -->
+            <div class="category-info">
+
+                <div class="detail-title-row">
+
+                    <div>
+
+                        <span class="detail-label">
+                            CATEGORY
+                        </span>
+
+                        <h2>
+                            {{ category.name }}
+                        </h2>
+
+                    </div>
+
+                    {% if category.is_active %}
+
+                        <span class="status-badge active">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Active
+                        </span>
+
+                    {% else %}
+
+                        <span class="status-badge inactive">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Inactive
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="detail-divider"></div>
+
+
+                <!-- DESCRIPTION -->
+                <div class="detail-section">
+
+                    <span class="detail-label">
+                        DESCRIPTION
+                    </span>
+
+                    {% if category.description %}
+
+                        <p class="category-description">
+                            {{ category.description }}
+                        </p>
+
+                    {% else %}
+
+                        <p class="text-muted">
+                            No description added for this category.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- META INFORMATION -->
+                <div class="category-meta">
+
+                    <div class="meta-box">
+
+                        <span class="meta-label">
+                            Category ID
+                        </span>
+
+                        <strong>
+                            #{{ category.id }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-box">
+
+                        <span class="meta-label">
+                            Created On
+                        </span>
+
+                        <strong>
+                            {{ category.created_at|date:"d M Y, h:i A" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-box">
+
+                        <span class="meta-label">
+                            Status
+                        </span>
+
+                        <strong>
+
+                            {% if category.is_active %}
+                                Active
+                            {% else %}
+                                Inactive
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.category-detail-page {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 20px;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #222;
+}
+
+.page-header p {
+    margin: 6px 0 0;
+    color: #888;
+    font-size: 14px;
+}
+
+.page-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.page-actions .btn {
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.category-detail-card {
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.category-detail-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.category-image-section {
+    width: 100%;
+}
+
+.category-detail-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 18px;
+    display: block;
+}
+
+.category-image-placeholder {
+    height: 260px;
+    border-radius: 18px;
+    background: #f7f3fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b28ac2;
+    font-size: 55px;
+}
+
+.category-info {
+    padding-top: 5px;
+}
+
+.detail-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.detail-title-row h2 {
+    margin: 7px 0 0;
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+}
+
+.detail-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #999;
+}
+
+.status-badge {
+    padding: 7px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-badge.active {
+    background: #eaf8ef;
+    color: #238b4d;
+}
+
+.status-badge.inactive {
+    background: #fff0f0;
+    color: #d64545;
+}
+
+.detail-divider {
+    height: 1px;
+    background: #eee;
+    margin: 22px 0;
+}
+
+.detail-section {
+    margin-bottom: 25px;
+}
+
+.category-description {
+    margin: 10px 0 0;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.category-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.meta-box {
+    background: #faf8fb;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.meta-label {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.meta-box strong {
+    font-size: 13px;
+    color: #333;
+}
+
+@media (max-width: 800px) {
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .category-detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .category-meta {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+{% endblock %}

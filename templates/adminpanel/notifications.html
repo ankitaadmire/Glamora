@@ -1,0 +1,126 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Notifications
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header mb-4">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+        <div>
+            <h2>Notifications</h2>
+
+            <p class="text-muted">
+                {{ unread_count }} unread notifications
+            </p>
+        </div>
+
+
+        {% if unread_count %}
+
+        <form method="POST"
+              action="{% url 'mark_all_notifications_read' %}">
+
+            {% csrf_token %}
+
+            <button class="btn btn-primary">
+                Mark All as Read
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-card">
+
+    {% for notification in notifications %}
+
+    <div class="activity-item
+        {% if not notification.is_read %}
+            bg-light
+        {% endif %}
+        p-3 mb-2 rounded">
+
+        <div class="activity-icon">
+
+            {% if notification.notification_type == 'booking' %}
+                <i class="fa-solid fa-calendar-check"></i>
+
+            {% elif notification.notification_type == 'payment' %}
+                <i class="fa-solid fa-credit-card"></i>
+
+            {% elif notification.notification_type == 'provider' %}
+                <i class="fa-solid fa-user"></i>
+
+            {% elif notification.notification_type == 'support' %}
+                <i class="fa-solid fa-headset"></i>
+
+            {% else %}
+                <i class="fa-solid fa-bell"></i>
+            {% endif %}
+
+        </div>
+
+
+        <div class="activity-details">
+
+            <strong>
+                {{ notification.title }}
+            </strong>
+
+            <span>
+                {{ notification.message }}
+            </span>
+
+            <small class="text-muted">
+                {{ notification.created_at|date:"d M Y, h:i A" }}
+            </small>
+
+        </div>
+
+
+        {% if not notification.is_read %}
+
+        <form method="POST"
+              action="{% url 'mark_notification_read' notification.id %}">
+
+            {% csrf_token %}
+
+            <button class="btn btn-sm btn-outline-primary">
+                Mark Read
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+
+    {% empty %}
+
+    <div class="empty-state">
+
+        <i class="fa-solid fa-bell-slash"></i>
+
+        <h4>No Notifications</h4>
+
+        <p>
+            You are all caught up.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

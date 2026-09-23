@@ -1,0 +1,102 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Revenue
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header mb-4">
+    <h2>Revenue</h2>
+    <p class="text-muted">
+        Revenue generated from completed payments
+    </p>
+</div>
+
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div>
+                <span>Total Revenue</span>
+                <h2>₹{{ total_revenue }}</h2>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div>
+                <span>Completed Transactions</span>
+                <h2>{{ total_transactions }}</h2>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div>
+                <span>Pending Payments</span>
+                <h2>{{ pending_payments }}</h2>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div>
+                <span>Refunded Amount</span>
+                <h2>₹{{ refunded_amount }}</h2>
+            </div>
+            <div class="stat-icon">
+                <i class="fa-solid fa-rotate-left"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="dashboard-card mt-4">
+
+    <div class="card-header">
+
+        <div>
+            <h3>Revenue Overview</h3>
+            <p>
+                Calculated from completed payment transactions
+            </p>
+        </div>
+
+    </div>
+
+    <div class="text-center py-5">
+
+        <i class="fa-solid fa-chart-line fa-3x mb-3"></i>
+
+        <h3>
+            ₹{{ total_revenue }}
+        </h3>
+
+        <p class="text-muted">
+            Current total revenue
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

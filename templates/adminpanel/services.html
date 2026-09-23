@@ -1,0 +1,205 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Services
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+        <h2>Service Management</h2>
+        <p>Manage all beauty and salon services</p>
+    </div>
+
+    <a href="{% url 'add_service' %}" class="primary-btn">
+        <i class="fa-solid fa-plus"></i>
+        Add Service
+    </a>
+
+</div>
+
+
+<div class="dashboard-card users-card">
+
+    <div class="user-toolbar">
+
+        <form method="GET" class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search services..."
+                value="{{ search }}"
+            >
+
+        </form>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="users-table">
+
+            <thead>
+
+                <tr>
+                    <th>Service</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for service in services %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="table-user">
+
+                            {% if service.image %}
+
+                                <img
+                                    src="{{ service.image.url }}"
+                                    class="category-image"
+                                >
+
+                            {% else %}
+
+                                <div class="user-avatar">
+                                    {{ service.name|first|upper }}
+                                </div>
+
+                            {% endif %}
+
+                            <strong>
+                                {{ service.name }}
+                            </strong>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        {{ service.category.name }}
+                    </td>
+
+
+                    <td>
+                        ₹{{ service.price }}
+                    </td>
+
+
+                    <td>
+                        {{ service.duration }} min
+                    </td>
+
+
+                    <td>
+
+                        {% if service.is_active %}
+
+                            <span class="status-badge active">
+                                Active
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge inactive">
+                                Inactive
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+                        {{ service.created_at|date:"d M Y" }}
+                    </td>
+
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <a
+                                href="{% url 'edit_service' service.id %}"
+                                class="view-btn"
+                                title="Edit"
+                            >
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+
+
+                            <form
+                                method="POST"
+                                action="{% url 'delete_service' service.id %}"
+                                onsubmit="return confirm('Delete this service?');"
+                                style="display:inline;"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="reject-btn"
+                                    title="Delete"
+                                >
+
+                                    <i class="fa-regular fa-trash-can"></i>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7">
+
+                        <div class="empty-state">
+
+                            <i class="fa-solid fa-scissors"></i>
+
+                            <p>No services found</p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

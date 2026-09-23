@@ -1,0 +1,190 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Service
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h2>
+            {% if service %}
+                Edit Service
+            {% else %}
+                Add Service
+            {% endif %}
+        </h2>
+
+        <p>
+            Create and manage salon services
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-card form-card">
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="form-group">
+
+            <label>Category</label>
+
+            <select name="category" required>
+
+                <option value="">
+                    Select Category
+                </option>
+
+                {% for category in categories %}
+
+                <option
+                    value="{{ category.id }}"
+                    {% if service.category_id == category.id %}
+                        selected
+                    {% endif %}
+                >
+
+                    {{ category.name }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Service Name</label>
+
+            <input
+                type="text"
+                name="name"
+                value="{{ service.name|default:'' }}"
+                placeholder="e.g. Hair Spa"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Description</label>
+
+            <textarea
+                name="description"
+                rows="5"
+                placeholder="Describe the service..."
+                required
+            >{{ service.description|default:'' }}</textarea>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>Price (₹)</label>
+
+                <input
+                    type="number"
+                    name="price"
+                    step="0.01"
+                    min="0"
+                    value="{{ service.price|default:'' }}"
+                    placeholder="999"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Duration (Minutes)</label>
+
+                <input
+                    type="number"
+                    name="duration"
+                    min="1"
+                    value="{{ service.duration|default:'' }}"
+                    placeholder="60"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Service Image</label>
+
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+            >
+
+        </div>
+
+
+        {% if service.image %}
+
+            <img
+                src="{{ service.image.url }}"
+                class="form-preview"
+            >
+
+        {% endif %}
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'admin_services' %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+
+                <i class="fa-solid fa-check"></i>
+
+                {% if service %}
+                    Update Service
+                {% else %}
+                    Create Service
+                {% endif %}
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,585 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Admin Profile
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.profile-page{
+    max-width:1050px;
+    margin:auto;
+}
+
+
+/* HEADER */
+
+.profile-page-header{
+    margin-bottom:28px;
+}
+
+.profile-page-header h2{
+    margin:0;
+    font-size:28px;
+    font-weight:700;
+    color:#27272f;
+}
+
+.profile-page-header p{
+    margin-top:7px;
+    color:#92929d;
+    font-size:14px;
+}
+
+
+/* PROFILE HERO */
+
+.profile-hero{
+    background:linear-gradient(
+        135deg,
+        #f7f1ff,
+        #ffffff
+    );
+
+    border:1px solid #eee8f8;
+    border-radius:22px;
+
+    padding:30px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:22px;
+
+    box-shadow:0 8px 30px rgba(50,40,80,.05);
+}
+
+
+.profile-main{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+
+.profile-large-avatar{
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        #9b6cff,
+        #7042d6
+    );
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:34px;
+
+    box-shadow:
+        0 8px 20px rgba(123,77,220,.25);
+}
+
+
+.profile-name{
+    font-size:22px;
+    font-weight:700;
+    color:#292932;
+}
+
+
+.profile-email{
+    margin-top:5px;
+    color:#888894;
+    font-size:13px;
+}
+
+
+.admin-badge{
+    display:inline-block;
+
+    margin-top:10px;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    background:#eee7ff;
+    color:#7047d1;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+
+/* STATUS */
+
+.account-status{
+    text-align:right;
+}
+
+.account-status span{
+    display:block;
+
+    font-size:11px;
+    color:#9999a3;
+
+    margin-bottom:6px;
+}
+
+.status-active{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    padding:6px 12px;
+
+    background:#eafaf1;
+    color:#20a464;
+
+    border-radius:20px;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#20a464;
+}
+
+
+/* INFORMATION GRID */
+
+.profile-grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:22px;
+}
+
+
+/* CARD */
+
+.profile-card{
+    background:white;
+
+    border:1px solid #eeeef3;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 8px 30px rgba(35,35,55,.05);
+
+    overflow:hidden;
+}
+
+
+.profile-card-header{
+    padding:20px 23px;
+
+    border-bottom:1px solid #f0f0f4;
+
+    display:flex;
+    align-items:center;
+
+    gap:13px;
+}
+
+
+.profile-card-icon{
+    width:42px;
+    height:42px;
+
+    border-radius:12px;
+
+    background:#f4efff;
+
+    color:#8154dc;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+.profile-card-header h4{
+    margin:0;
+
+    font-size:16px;
+    font-weight:700;
+
+    color:#292932;
+}
+
+
+.profile-card-header p{
+    margin:4px 0 0;
+
+    font-size:11px;
+    color:#9999a4;
+}
+
+
+.profile-card-body{
+    padding:23px;
+}
+
+
+/* INFO ROW */
+
+.info-row{
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #f3f3f6;
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+
+.info-label{
+    color:#9999a4;
+
+    font-size:12px;
+}
+
+
+.info-value{
+    color:#35353e;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    text-align:right;
+}
+
+
+/* BUTTON */
+
+.profile-actions{
+    margin-top:22px;
+
+    display:flex;
+
+    gap:10px;
+}
+
+
+.profile-btn{
+    border:0;
+
+    border-radius:11px;
+
+    padding:11px 18px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+
+.edit-btn{
+    background:#8b5cf6;
+    color:white;
+}
+
+.edit-btn:hover{
+    background:#7544df;
+    color:white;
+}
+
+
+.settings-btn{
+    background:#f3f3f6;
+    color:#44444d;
+}
+
+.settings-btn:hover{
+    background:#e9e9ee;
+    color:#333;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:750px){
+
+    .profile-hero{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .account-status{
+        text-align:left;
+    }
+
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+
+<div class="profile-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="profile-page-header">
+
+        <h2>Admin Profile</h2>
+
+        <p>
+            View and manage your administrator account information.
+        </p>
+
+    </div>
+
+
+    <!-- PROFILE HERO -->
+
+    <div class="profile-hero">
+
+        <div class="profile-main">
+
+            <div class="profile-large-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="profile-name">
+                    {{ request.user.username }}
+                </div>
+
+                <div class="profile-email">
+                    {{ request.user.email }}
+                </div>
+
+                <span class="admin-badge">
+                    <i class="fa-solid fa-shield-halved me-1"></i>
+                    Super Admin
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="account-status">
+
+            <span>Account Status</span>
+
+            <div class="status-active">
+
+                <span class="status-dot"></span>
+
+                Active
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- INFORMATION -->
+
+    <div class="profile-grid">
+
+
+        <!-- PERSONAL INFORMATION -->
+
+        <div class="profile-card">
+
+            <div class="profile-card-header">
+
+                <div class="profile-card-icon">
+
+                    <i class="fa-regular fa-user"></i>
+
+                </div>
+
+                <div>
+
+                    <h4>Personal Information</h4>
+
+                    <p>Your account details</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-card-body">
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Username
+                    </span>
+
+                    <span class="info-value">
+                        {{ request.user.username }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Email
+                    </span>
+
+                    <span class="info-value">
+                        {{ request.user.email|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Phone
+                    </span>
+
+                    <span class="info-value">
+                        {{ request.user.phone|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACCOUNT INFORMATION -->
+
+        <div class="profile-card">
+
+            <div class="profile-card-header">
+
+                <div
+                    class="profile-card-icon"
+                    style="background:#fff4e8;color:#f59e0b;"
+                >
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <div>
+
+                    <h4>Account Information</h4>
+
+                    <p>Administrator account details</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-card-body">
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Role
+                    </span>
+
+                    <span class="info-value">
+                        Super Admin
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Account Status
+                    </span>
+
+                    <span class="info-value">
+                        Active
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Member Since
+                    </span>
+
+                    <span class="info-value">
+                        {{ request.user.date_joined|date:"d M Y" }}
+                    </span>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <a
+                        href="{% url 'admin_settings' %}"
+                        class="profile-btn edit-btn"
+                    >
+
+                        <i class="fa-solid fa-gear me-1"></i>
+
+                        Account Settings
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

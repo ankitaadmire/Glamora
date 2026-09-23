@@ -1,0 +1,774 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Category Management
+{% endblock %}
+
+{% block content %}
+
+<div class="category-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+
+        <div>
+            <h2>Category Management</h2>
+            <p>Manage beauty service categories from one place.</p>
+        </div>
+
+        <a href="{% url 'add_category' %}" class="add-category-btn">
+            <i class="fa-solid fa-plus"></i>
+            Add Category
+        </a>
+
+    </div>
+
+
+    <!-- SEARCH CARD -->
+    <div class="dashboard-card search-card">
+
+        <form method="GET"
+              action="{% url 'admin_categories' %}"
+              class="category-search-form">
+
+            <div class="search-input-wrapper">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Search categories by name or description..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <button type="submit" class="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Search
+            </button>
+
+            {% if search %}
+
+                <a href="{% url 'admin_categories' %}"
+                   class="clear-btn">
+
+                    <i class="fa-solid fa-xmark"></i>
+                    Clear
+
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <!-- RESULTS HEADER -->
+    <div class="results-header">
+
+        <div>
+
+            <h3>All Categories</h3>
+
+            {% if search %}
+
+                <span>
+                    Search results for
+                    <strong>"{{ search }}"</strong>
+                </span>
+
+            {% else %}
+
+                <span>
+                    Showing all categories
+                </span>
+
+            {% endif %}
+
+        </div>
+
+        <div class="category-count">
+
+            <strong>{{ categories|length }}</strong>
+            Categories
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY TABLE -->
+    <div class="dashboard-card category-table-card">
+
+        {% if categories %}
+
+        <div class="table-responsive">
+
+            <table class="category-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for category in categories %}
+
+                    <tr>
+
+                        <!-- ID -->
+                        <td>
+                            <span class="category-id">
+                                #{{ category.id }}
+                            </span>
+                        </td>
+
+
+                        <!-- CATEGORY -->
+                        <td>
+
+                            <div class="category-name-cell">
+
+                                {% if category.image %}
+
+                                    <img
+                                        src="{{ category.image.url }}"
+                                        alt="{{ category.name }}"
+                                        class="category-thumb"
+                                    >
+
+                                {% else %}
+
+                                    <div class="category-thumb placeholder">
+                                        <i class="fa-solid fa-tags"></i>
+                                    </div>
+
+                                {% endif %}
+
+                                <div>
+
+                                    <strong>
+                                        {{ category.name }}
+                                    </strong>
+
+                                    <small>
+                                        Beauty Category
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DESCRIPTION -->
+                        <td>
+
+                            {% if category.description %}
+
+                                <span class="description-text">
+                                    {{ category.description|truncatechars:70 }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="no-description">
+                                    No description
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- STATUS -->
+                        <td>
+
+                            {% if category.is_active %}
+
+                                <span class="status active">
+                                    <i class="fa-solid fa-circle"></i>
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="status inactive">
+                                    <i class="fa-solid fa-circle"></i>
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CREATED -->
+                        <td>
+
+                            <span class="created-date">
+
+                                {{ category.created_at|date:"d M Y" }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
+                        <td>
+
+                            <div class="category-actions">
+
+                                <!-- VIEW -->
+                                <a
+                                    href="{% url 'view_category' category.id %}"
+                                    class="action-btn view"
+                                    title="View Category"
+                                >
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+
+
+                                <!-- EDIT -->
+                                <a
+                                    href="{% url 'edit_category' category.id %}"
+                                    class="action-btn edit"
+                                    title="Edit Category"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+
+
+                                <!-- DELETE -->
+                                <form
+                                    method="POST"
+                                    action="{% url 'delete_category' category.id %}"
+                                    onsubmit="return confirm('Are you sure you want to delete this category?');"
+                                    style="display:inline;"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="action-btn delete"
+                                        title="Delete Category"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-category">
+
+                <div class="empty-icon">
+                    <i class="fa-solid fa-tags"></i>
+                </div>
+
+                {% if search %}
+
+                    <h3>No categories found</h3>
+
+                    <p>
+                        No category matches
+                        "<strong>{{ search }}</strong>".
+                    </p>
+
+                    <a href="{% url 'admin_categories' %}"
+                       class="clear-search-btn">
+
+                        Clear Search
+
+                    </a>
+
+                {% else %}
+
+                    <h3>No categories available</h3>
+
+                    <p>
+                        Start by creating your first beauty category.
+                    </p>
+
+                    <a href="{% url 'add_category' %}"
+                       class="add-category-btn">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add Category
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* PAGE */
+
+.category-page {
+    width: 100%;
+}
+
+
+/* HEADER */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #222;
+}
+
+.page-header p {
+    margin: 5px 0 0;
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+
+/* ADD BUTTON */
+
+.add-category-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 10px;
+    background: #222;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.add-category-btn:hover {
+    color: white;
+    transform: translateY(-1px);
+}
+
+
+/* SEARCH */
+
+.search-card {
+    padding: 18px 20px;
+    margin-bottom: 24px;
+}
+
+.category-search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 14px;
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    height: 44px;
+    padding: 0 15px 0 42px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    outline: none;
+    font-size: 13px;
+    color: #333;
+    background: #fff;
+    transition: .2s;
+}
+
+.search-input-wrapper input:focus {
+    border-color: #b58ac6;
+    box-shadow: 0 0 0 3px rgba(181, 138, 198, .10);
+}
+
+.search-input-wrapper input::placeholder {
+    color: #aaa;
+}
+
+
+/* SEARCH BUTTON */
+
+.search-btn {
+    height: 44px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 10px;
+    background: #222;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.search-btn:hover {
+    background: #333;
+}
+
+
+/* CLEAR */
+
+.clear-btn {
+    height: 44px;
+    padding: 0 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    color: #666;
+    background: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.clear-btn:hover {
+    background: #f7f7f7;
+    color: #333;
+}
+
+
+/* RESULTS */
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.results-header h3 {
+    margin: 0 0 3px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+}
+
+.results-header span {
+    font-size: 12px;
+    color: #999;
+}
+
+.category-count {
+    background: #f7f3fa;
+    padding: 8px 13px;
+    border-radius: 8px;
+    font-size: 12px !important;
+    color: #777 !important;
+}
+
+.category-count strong {
+    color: #333;
+}
+
+
+/* TABLE */
+
+.category-table-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.category-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.category-table thead {
+    background: #fafafa;
+}
+
+.category-table th {
+    padding: 15px 18px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #888;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+
+.category-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+    font-size: 13px;
+}
+
+.category-table tbody tr {
+    transition: .2s;
+}
+
+.category-table tbody tr:hover {
+    background: #fcfbfd;
+}
+
+
+/* CATEGORY */
+
+.category-id {
+    color: #999;
+    font-size: 12px;
+}
+
+.category-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.category-name-cell strong {
+    display: block;
+    color: #333;
+    font-size: 13px;
+}
+
+.category-name-cell small {
+    display: block;
+    margin-top: 3px;
+    color: #aaa;
+    font-size: 10px;
+}
+
+.category-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.category-thumb.placeholder {
+    background: #f5eff8;
+    color: #a47bb5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* DESCRIPTION */
+
+.description-text {
+    color: #666;
+    line-height: 1.5;
+}
+
+.no-description {
+    color: #aaa;
+    font-style: italic;
+}
+
+
+/* STATUS */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status i {
+    font-size: 6px;
+}
+
+.status.active {
+    background: #eaf8ef;
+    color: #238b4d;
+}
+
+.status.inactive {
+    background: #fff0f0;
+    color: #d64545;
+}
+
+
+/* DATE */
+
+.created-date {
+    color: #777;
+    font-size: 12px;
+}
+
+
+/* ACTIONS */
+
+.category-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.action-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid #e8e8e8;
+    background: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action-btn.view {
+    color: #4c78a8;
+}
+
+.action-btn.edit {
+    color: #9b6ab1;
+}
+
+.action-btn.delete {
+    color: #d9534f;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    background: #fafafa;
+}
+
+
+/* EMPTY */
+
+.empty-category {
+    text-align: center;
+    padding: 70px 20px;
+}
+
+.empty-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: #f7f3fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a47bb5;
+    font-size: 25px;
+}
+
+.empty-category h3 {
+    margin: 0 0 7px;
+    font-size: 18px;
+    color: #333;
+}
+
+.empty-category p {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.clear-search-btn {
+    display: inline-block;
+    padding: 9px 16px;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .page-header {
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .category-search-form {
+        flex-wrap: wrap;
+    }
+
+    .search-input-wrapper {
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+    .results-header {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

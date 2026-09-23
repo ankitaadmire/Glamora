@@ -1,0 +1,664 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | User Details
+{% endblock %}
+
+{% block content %}
+
+<div class="user-detail-page">
+
+    <!-- PAGE HEADER -->
+    <div class="detail-header">
+
+        <div>
+            <a href="{% url 'admin_users' %}" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Users
+            </a>
+
+            <h2>User Details</h2>
+            <p>View complete information about this account.</p>
+        </div>
+
+
+    </div>
+
+
+    <!-- PROFILE CARD -->
+    <div class="profile-detail-card">
+
+        <div class="profile-cover"></div>
+
+        <div class="profile-main">
+
+            <div class="large-avatar">
+
+                {% if user_obj.profile_image %}
+                    <img src="{{ user_obj.profile_image.url }}"
+                         alt="{{ user_obj.username }}">
+                {% else %}
+                    <i class="fa-solid fa-user"></i>
+                {% endif %}
+
+            </div>
+
+            <div class="profile-heading">
+
+                <h2>
+                    {{ user_obj.get_full_name|default:user_obj.username }}
+                </h2>
+
+                <p>
+                    @{{ user_obj.username }}
+                </p>
+
+                {% if user_obj.role == 'admin' %}
+
+                    <span class="role-badge admin">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Administrator
+                    </span>
+
+                {% elif user_obj.role == 'provider' %}
+
+                    <span class="role-badge provider">
+                        <i class="fa-solid fa-briefcase"></i>
+                        Service Provider
+                    </span>
+
+                {% elif user_obj.role == 'customer' %}
+
+                    <span class="role-badge customer">
+                        <i class="fa-solid fa-user"></i>
+                        Customer
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="account-status">
+
+                {% if user_obj.is_active %}
+
+                    <span class="status-badge active">
+                        <span></span>
+                        Active
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge inactive">
+                        <span></span>
+                        Inactive
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- INFORMATION GRID -->
+    <div class="details-grid">
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="detail-card">
+
+            <div class="detail-card-header">
+
+                <div class="detail-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <h3>Personal Information</h3>
+                    <p>Basic account information</p>
+                </div>
+
+            </div>
+
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span>Full Name</span>
+
+                    <strong>
+                        {{ user_obj.get_full_name|default:"Not provided" }}
+                    </strong>
+                </div>
+
+
+                <div class="info-row">
+                    <span>Username</span>
+
+                    <strong>
+                        {{ user_obj.username }}
+                    </strong>
+                </div>
+
+
+                <div class="info-row">
+                    <span>Email Address</span>
+
+                    <strong>
+                        {{ user_obj.email|default:"Not provided" }}
+                    </strong>
+                </div>
+
+
+                <div class="info-row">
+                    <span>Phone Number</span>
+
+                    <strong>
+                        {{ user_obj.phone|default:"Not provided" }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCOUNT INFORMATION -->
+        <div class="detail-card">
+
+            <div class="detail-card-header">
+
+                <div class="detail-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <h3>Account Information</h3>
+                    <p>Role and account status</p>
+                </div>
+
+            </div>
+
+
+            <div class="info-list">
+
+                <div class="info-row">
+
+                    <span>Account Role</span>
+
+                    <strong>
+
+                        {% if user_obj.role == 'admin' %}
+                            Administrator
+
+                        {% elif user_obj.role == 'provider' %}
+                            Service Provider
+
+                        {% elif user_obj.role == 'customer' %}
+                            Customer
+
+                        {% else %}
+                            {{ user_obj.role|title }}
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span>Account Status</span>
+
+                    {% if user_obj.is_active %}
+
+                        <span class="mini-status active">
+                            Active
+                        </span>
+
+                    {% else %}
+
+                        <span class="mini-status inactive">
+                            Inactive
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if user_obj.role == 'provider' %}
+
+                <div class="info-row">
+
+                    <span>Provider Status</span>
+
+                    <strong>
+
+                        {% if user_obj.provider_status == 'approved' %}
+                            Approved
+
+                        {% elif user_obj.provider_status == 'pending' %}
+                            Pending
+
+                        {% elif user_obj.provider_status == 'rejected' %}
+                            Rejected
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="info-row">
+
+                    <span>Joined On</span>
+
+                    <strong>
+                        {{ user_obj.date_joined|date:"d M Y, h:i A" }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span>Last Login</span>
+
+                    <strong>
+
+                        {% if user_obj.last_login %}
+                            {{ user_obj.last_login|date:"d M Y, h:i A" }}
+                        {% else %}
+                            Never
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- USER ID / SYSTEM INFO -->
+    <div class="detail-card system-card">
+
+        <div class="detail-card-header">
+
+            <div class="detail-icon">
+                <i class="fa-solid fa-database"></i>
+            </div>
+
+            <div>
+                <h3>System Information</h3>
+                <p>Account identification details</p>
+            </div>
+
+        </div>
+
+
+        <div class="system-grid">
+
+            <div>
+                <span>User ID</span>
+                <strong>#{{ user_obj.id }}</strong>
+            </div>
+
+            <div>
+                <span>Username</span>
+                <strong>{{ user_obj.username }}</strong>
+            </div>
+
+            <div>
+                <span>Staff Access</span>
+
+                <strong>
+                    {% if user_obj.is_staff %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </strong>
+
+            </div>
+
+            <div>
+                <span>Superuser</span>
+
+                <strong>
+                    {% if user_obj.is_superuser %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.user-detail-page{
+    padding-bottom:40px;
+}
+
+.detail-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:25px;
+}
+
+.detail-header h2{
+    margin:12px 0 4px;
+    font-size:28px;
+    font-weight:700;
+}
+
+.detail-header p{
+    margin:0;
+    color:#888;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:#777;
+    font-size:14px;
+}
+
+.back-btn:hover{
+    color:#8b5cf6;
+}
+
+.header-actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:11px 18px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+}
+
+.btn-primary{
+    background:#8b5cf6;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#7c3aed;
+    color:white;
+}
+
+
+.profile-detail-card,
+.detail-card{
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.06);
+    border:1px solid #eee;
+    overflow:hidden;
+}
+
+.profile-cover{
+    height:115px;
+    background:linear-gradient(
+        135deg,
+        #f3e8ff,
+        #fce7f3
+    );
+}
+
+.profile-main{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:0 28px 25px;
+    position:relative;
+}
+
+.large-avatar{
+    width:90px;
+    height:90px;
+    margin-top:-45px;
+    border-radius:50%;
+    background:#f3e8ff;
+    border:5px solid #fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    color:#8b5cf6;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.large-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-heading{
+    padding-top:18px;
+}
+
+.profile-heading h2{
+    margin:0;
+    font-size:22px;
+}
+
+.profile-heading p{
+    margin:4px 0 9px;
+    color:#888;
+}
+
+.role-badge,
+.status-badge,
+.mini-status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border-radius:20px;
+    padding:6px 11px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.role-badge.admin{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.role-badge.provider{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+.role-badge.customer{
+    background:#fce7f3;
+    color:#be185d;
+}
+
+.account-status{
+    margin-left:auto;
+    align-self:flex-start;
+    margin-top:25px;
+}
+
+.status-badge.active,
+.mini-status.active{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.status-badge.inactive,
+.mini-status.inactive{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.status-badge span{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:currentColor;
+}
+
+
+.details-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    margin-top:22px;
+}
+
+.detail-card{
+    padding:25px;
+}
+
+.detail-card-header{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    margin-bottom:20px;
+}
+
+.detail-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:#f3e8ff;
+    color:#8b5cf6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.detail-card-header h3{
+    margin:0;
+    font-size:17px;
+}
+
+.detail-card-header p{
+    margin:3px 0 0;
+    color:#999;
+    font-size:12px;
+}
+
+.info-list{
+    display:flex;
+    flex-direction:column;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid #f1f1f1;
+    gap:20px;
+}
+
+.info-row:last-child{
+    border-bottom:none;
+}
+
+.info-row span:first-child{
+    color:#888;
+    font-size:13px;
+}
+
+.info-row strong{
+    font-size:14px;
+    text-align:right;
+    word-break:break-word;
+}
+
+.system-card{
+    margin-top:22px;
+}
+
+.system-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.system-grid div{
+    background:#fafafa;
+    border-radius:12px;
+    padding:16px;
+}
+
+.system-grid span{
+    display:block;
+    color:#999;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.system-grid strong{
+    font-size:14px;
+}
+
+
+@media(max-width:900px){
+
+    .details-grid{
+        grid-template-columns:1fr;
+    }
+
+    .system-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .detail-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .profile-main{
+        flex-wrap:wrap;
+    }
+
+    .account-status{
+        margin-left:0;
+        margin-top:0;
+    }
+
+    .system-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+{% endblock %}

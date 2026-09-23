@@ -1,0 +1,129 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Category
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h2>
+            {% if category %}
+                Edit Category
+            {% else %}
+                Add Category
+            {% endif %}
+        </h2>
+
+        <p>
+            Create and manage beauty service categories
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-card form-card">
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="form-group">
+
+            <label>Category Name</label>
+
+            <input
+                type="text"
+                name="name"
+                maxlength="100"
+                required
+                value="{{ category.name|default:'' }}"
+            >
+            <small class="text-muted">
+                Maximum 100 characters
+            </small>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Description</label>
+
+            <textarea
+                name="description"
+                maxlength="500"
+                rows="5"
+            >{{ category.description|default:'' }}</textarea>
+
+            <small class="text-muted">
+                Maximum 500 characters
+            </small>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Category Image</label>
+
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+            >
+
+        </div>
+
+
+        {% if category.image %}
+
+            <img
+                src="{{ category.image.url }}"
+                class="form-preview"
+            >
+
+        {% endif %}
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'admin_categories' %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+
+                <i class="fa-solid fa-check"></i>
+
+                {% if category %}
+                    Update Category
+                {% else %}
+                    Create Category
+                {% endif %}
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

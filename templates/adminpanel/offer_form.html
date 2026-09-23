@@ -1,0 +1,257 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Offer
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                {% if offer %}
+                    Edit Offer
+                {% else %}
+                    Add New Offer
+                {% endif %}
+            </h3>
+
+            <p>
+                Create and manage promotional offers
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="row g-4">
+
+
+            <!-- OFFER NAME -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Offer Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ offer.name|default:'' }}"
+                    placeholder="e.g. Summer Beauty Offer"
+                    required
+                >
+
+            </div>
+
+
+            <!-- DISCOUNT -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Discount Percentage
+                </label>
+
+                <div class="input-group">
+
+                    <input
+                        type="number"
+                        name="discount_percentage"
+                        class="form-control"
+                        value="{{ offer.discount_percentage|default:'' }}"
+                        min="1"
+                        max="100"
+                        step="0.01"
+                        required
+                    >
+
+                    <span class="input-group-text">
+                        %
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Category
+                </label>
+
+                <select
+                    name="category"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    {% for category in categories %}
+
+                    <option
+                        value="{{ category.id }}"
+                        {% if offer.category_id == category.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ category.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- SERVICE -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Service
+                </label>
+
+                <select
+                    name="service"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        All Services
+                    </option>
+
+                    {% for service in services %}
+
+                    <option
+                        value="{{ service.id }}"
+                        {% if offer.service_id == service.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ service.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- START DATE -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    name="start_date"
+                    class="form-control"
+                    value="{{ offer.start_date|date:'Y-m-d' }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- END DATE -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    End Date
+                </label>
+
+                <input
+                    type="date"
+                    name="end_date"
+                    class="form-control"
+                    value="{{ offer.end_date|date:'Y-m-d' }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="col-12">
+
+                <label class="form-label">
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    class="form-control"
+                    rows="4"
+                    placeholder="Describe the offer..."
+                >{{ offer.description|default:'' }}</textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="mt-4 d-flex gap-2">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+
+                <i class="fa-solid fa-check"></i>
+
+                {% if offer %}
+                    Update Offer
+                {% else %}
+                    Create Offer
+                {% endif %}
+
+            </button>
+
+
+            <a
+                href="{% url 'admin_offers' %}"
+                class="btn btn-light"
+            >
+
+                Cancel
+
+            </a>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+{% endblock %}

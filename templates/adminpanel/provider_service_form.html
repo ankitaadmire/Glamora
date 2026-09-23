@@ -1,0 +1,111 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Assign Service
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+        <h2>Assign Service</h2>
+        <p>Assign a service to an approved provider</p>
+    </div>
+
+</div>
+
+
+<div class="dashboard-card form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="form-group">
+
+            <label>Provider</label>
+
+            <select name="provider" required>
+
+                <option value="">
+                    Select Provider
+                </option>
+
+                {% for provider in providers %}
+
+                <option value="{{ provider.id }}">
+                    {{ provider.username }} — {{ provider.email }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Service</label>
+
+            <select name="service" required>
+
+                <option value="">
+                    Select Service
+                </option>
+
+                {% for service in services %}
+
+                <option value="{{ service.id }}">
+                    {{ service.name }} — {{ service.category.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Provider Price</label>
+
+            <input
+                type="number"
+                name="price"
+                step="0.01"
+                min="0"
+                placeholder="Enter provider price"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'provider_services' %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                <i class="fa-solid fa-link"></i>
+                Assign Service
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

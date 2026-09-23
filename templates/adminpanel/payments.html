@@ -1,0 +1,163 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Payments
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header mb-4">
+    <h2>Payments</h2>
+    <p class="text-muted">
+        Manage all payment transactions
+    </p>
+</div>
+
+<div class="dashboard-card">
+
+    <form method="GET" class="row g-3 mb-4">
+
+        <div class="col-md-6">
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                class="form-control"
+                placeholder="Search transaction or user..."
+            >
+        </div>
+
+        <div class="col-md-3">
+
+            <select name="status" class="form-select">
+
+                <option value="">All Status</option>
+
+                <option value="pending"
+                    {% if selected_status == 'pending' %}selected{% endif %}>
+                    Pending
+                </option>
+
+                <option value="completed"
+                    {% if selected_status == 'completed' %}selected{% endif %}>
+                    Completed
+                </option>
+
+                <option value="failed"
+                    {% if selected_status == 'failed' %}selected{% endif %}>
+                    Failed
+                </option>
+
+                <option value="refunded"
+                    {% if selected_status == 'refunded' %}selected{% endif %}>
+                    Refunded
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary w-100">
+                <i class="fa-solid fa-filter"></i>
+                Filter
+            </button>
+        </div>
+
+    </form>
+
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
+
+            <thead>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Customer</th>
+                    <th>Provider</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for payment in payments %}
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            {{ payment.transaction_id }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ payment.booking.customer.username }}
+                    </td>
+
+                    <td>
+                        {{ payment.booking.provider.username }}
+                    </td>
+
+                    <td>
+                        ₹{{ payment.amount }}
+                    </td>
+
+                    <td>
+                        {{ payment.payment_method }}
+                    </td>
+
+                    <td>
+
+                        {% if payment.status == 'completed' %}
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+
+                        {% elif payment.status == 'pending' %}
+                            <span class="badge bg-warning">
+                                Pending
+                            </span>
+
+                        {% elif payment.status == 'failed' %}
+                            <span class="badge bg-danger">
+                                Failed
+                            </span>
+
+                        {% else %}
+                            <span class="badge bg-secondary">
+                                Refunded
+                            </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ payment.created_at|date:"d M Y, h:i A" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="7" class="text-center py-5">
+                        No payments found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

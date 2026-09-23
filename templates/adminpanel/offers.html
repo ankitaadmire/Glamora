@@ -1,0 +1,322 @@
+{% extends 'adminpanel/base_admin.html' %}
+
+{% block title %}
+Glamora | Offers & Discounts
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Offers & Discounts
+            </h3>
+
+            <p>
+                Manage promotional offers for Glamora services
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'add_offer' %}"
+            class="btn btn-primary"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            Add Offer
+
+        </a>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <form method="GET" class="row g-3 mb-4">
+
+        <div class="col-md-9">
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                class="form-control"
+                placeholder="Search offers, categories or services..."
+            >
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <button
+                type="submit"
+                class="btn btn-primary w-100"
+            >
+
+                <i class="fa-solid fa-search"></i>
+
+                Search
+
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- TABLE -->
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Offer</th>
+
+                    <th>Discount</th>
+
+                    <th>Category</th>
+
+                    <th>Service</th>
+
+                    <th>Validity</th>
+
+                    <th>Status</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for offer in offers %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            {{ offer.name }}
+                        </strong>
+
+                        {% if offer.description %}
+
+                        <br>
+
+                        <small class="text-muted">
+                            {{ offer.description|truncatechars:45 }}
+                        </small>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            {{ offer.discount_percentage }}%
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        {% if offer.category %}
+
+                            {{ offer.category.name }}
+
+                        {% else %}
+
+                            <span class="text-muted">
+                                All Categories
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if offer.service %}
+
+                            {{ offer.service.name }}
+
+                        {% else %}
+
+                            <span class="text-muted">
+                                All Services
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {{ offer.start_date|date:"d M Y" }}
+
+                        <br>
+
+                        <small class="text-muted">
+                            to {{ offer.end_date|date:"d M Y" }}
+                        </small>
+
+                    </td>
+
+
+                    <td>
+
+                        {% if offer.is_active %}
+
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Inactive
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+
+                            <!-- TOGGLE -->
+
+                            <form
+                                method="POST"
+                                action="{% url 'toggle_offer' offer.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-outline-success"
+                                    title="Activate / Deactivate"
+                                >
+
+                                    <i class="fa-solid fa-power-off"></i>
+
+                                </button>
+
+                            </form>
+
+
+                            <!-- EDIT -->
+
+                            <a
+                                href="{% url 'edit_offer' offer.id %}"
+                                class="btn btn-sm btn-outline-primary"
+                                title="Edit"
+                            >
+
+                                <i class="fa-solid fa-pen"></i>
+
+                            </a>
+
+
+                            <!-- DELETE -->
+
+                            <form
+                                method="POST"
+                                action="{% url 'delete_offer' offer.id %}"
+                                onsubmit="return confirm('Delete this offer?');"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-outline-danger"
+                                    title="Delete"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+
+                            </form>
+
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="8"
+                        class="text-center py-5"
+                    >
+
+                        <i
+                            class="fa-solid fa-percent"
+                            style="font-size:35px;"
+                        ></i>
+
+                        <p class="mt-3">
+                            No offers found.
+                        </p>
+
+                        <a
+                            href="{% url 'add_offer' %}"
+                            class="btn btn-primary"
+                        >
+
+                            Create First Offer
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
